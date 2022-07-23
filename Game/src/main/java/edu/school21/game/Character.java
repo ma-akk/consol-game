@@ -2,9 +2,9 @@ package edu.school21.game;
 
 public abstract class Character {
 
-    private Position characterPos;
+    protected Position characterPos;
 
-    private Position characterGoal;
+    protected Position characterGoal;
 
     public Position getCharacterPos() {
         return characterPos;
