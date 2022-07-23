@@ -7,6 +7,14 @@ public class Position {
     private int x;
     private int y;
     private Design design;
+    private Type type;
+
+    public Position(int x, int y, Design design, Type type) {
+        this.x = x;
+        this.y = y;
+        this.design = design;
+        this.type = type;
+    }
 
     public Position(int x, int y, Design design) {
         this.x = x;
@@ -27,6 +35,21 @@ public class Position {
     }
 
     public Position() {
+    }
+
+    public Type getType() {
+        return type;
+    }
+
+    public void setParams(int x, int y, Design design, Type type){
+        this.x = x;
+        this.y = y;
+        this.design = design;
+        this.type = type;
+    }
+
+    public void setType(Type type) {
+        this.type = type;
     }
 
     public int getX() {
