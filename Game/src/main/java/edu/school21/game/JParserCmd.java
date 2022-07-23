@@ -88,6 +88,8 @@ public class JParserCmd {
     }
 
     public char getEmptyChar() {
+        if (emptyChar.equals(""))
+            emptyChar = " ";
         return emptyChar.charAt(0);
     }
 
@@ -122,21 +124,21 @@ public class JParserCmd {
             fileInput = new FileInputStream("src/main/resources/application.properties");
             property.load(fileInput);
             enemyChar = property.getProperty("enemy.char");
-            playerChar = property.getProperty("playerChar");
-            wallChar = property.getProperty("wallChar");
-            goalChar = property.getProperty("goalChar");
-            emptyChar = property.getProperty("emptyChar");
-            enemyColor = property.getProperty("enemyColor");
-            playerColor = property.getProperty("playerColor");
-            wallColor = property.getProperty("wallColor");
-            goalColor = property.getProperty("goalColor");
-            emptyColor = property.getProperty("emptyColor");
+            playerChar = property.getProperty("player.char");
+            wallChar = property.getProperty("wall.char");
+            goalChar = property.getProperty("goal.char");
+            emptyChar = property.getProperty("empty.char");
+            enemyColor = property.getProperty("enemy.color");
+            playerColor = property.getProperty("player.color");
+            wallColor = property.getProperty("wall.color");
+            goalColor = property.getProperty("goal.color");
+            emptyColor = property.getProperty("empty.color");
         } catch (IOException e) {
             e.getStackTrace();
         }
     }
 
-    public Color chooseColor(String colorName) {
+    private Color chooseColor(String colorName) {
 
         Color color = new Color(255, 255, 255);
 
