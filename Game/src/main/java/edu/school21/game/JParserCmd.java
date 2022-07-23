@@ -11,6 +11,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
 
+import static java.awt.Color.*;
+
 public class JParserCmd {
 
 //    @Parameters(separators = "=")
@@ -89,24 +91,24 @@ public class JParserCmd {
         return emptyChar.charAt(0);
     }
 
-    public Ansi.BColor getEnemyColor() {
-        return Ansi.BColor.valueOf(enemyColor);
+    public Color getEnemyColor() {
+        return chooseColor(enemyColor);
     }
 
-    public Ansi.BColor getPlayerColor() {
-        return Ansi.BColor.valueOf(playerColor);
+    public Color getPlayerColor() {
+        return chooseColor(playerColor);
     }
 
-    public Ansi.BColor getWallColor() {
-        return Ansi.BColor.valueOf(wallColor);
+    public Color getWallColor() {
+        return chooseColor(wallColor);
     }
 
-    public Ansi.BColor getGoalColor() {
-        return Ansi.BColor.valueOf(goalColor);
+    public Color getGoalColor() {
+        return chooseColor(goalColor);
     }
 
-    public Ansi.BColor getEmptyColor() {
-        return Ansi.BColor.valueOf(emptyColor);
+    public Color getEmptyColor() {
+        return chooseColor(emptyColor);
     }
 
     public void parseProps() {
@@ -116,7 +118,7 @@ public class JParserCmd {
         Properties property = new Properties();
 
         try {
-            //JParserCmd.class.getResource("/resources/image.bmp")
+            //JParserCmd.class.getResource("/resources/application.properties")
             fileInput = new FileInputStream("src/main/resources/application.properties");
             property.load(fileInput);
             enemyChar = property.getProperty("enemy.char");
@@ -129,9 +131,44 @@ public class JParserCmd {
             wallColor = property.getProperty("wallColor");
             goalColor = property.getProperty("goalColor");
             emptyColor = property.getProperty("emptyColor");
-
         } catch (IOException e) {
-            System.err.println("ОШИБКА: Файл свойств отсуствует!");
+            e.getStackTrace();
         }
     }
+
+    public Color chooseColor(String colorName) {
+
+        Color color = new Color(255, 255, 255);
+
+        switch (colorName) {
+            case "RED": color = RED;
+                break;
+            case "BLUE": color = BLUE;
+                break;
+            case "YELLOW": color = YELLOW;
+                break;
+            case "BLACK": color = BLACK;
+                break;
+            case "GREEN": color = GREEN;
+                break;
+            case "GRAY": color = GRAY;
+                break;
+            case "ORANGE": color = ORANGE;
+                break;
+            case "CYAN": color = CYAN;
+                break;
+            case "MAGENTA": color = MAGENTA;
+                break;
+            case "DARK_GRAY": color = DARK_GRAY;
+                break;
+            case "LIGHT_GRAY": color = LIGHT_GRAY;
+                break;
+            case "PINK": color = PINK;
+                break;
+            default: color = WHITE;
+                break;
+        }
+        return color;
+    }
+
 }
