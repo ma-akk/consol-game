@@ -3,11 +3,23 @@ package edu.school21.game;
 import java.awt.*;
 
 public class DesignList {
-    Design enemy;
-    Design player;
-    Design wall;
-    Design goal;
-    Design empty;
+    private Design enemy = new Design();
+    private Design player = new Design();
+    private Design wall = new Design();
+    private Design goal = new Design();
+    private Design empty = new Design();
+
+    public DesignList() {
+
+    }
+
+    public DesignList(Design enemy, Design player, Design wall, Design goal, Design empty) {
+        this.enemy = enemy;
+        this.player = player;
+        this.wall = wall;
+        this.goal = goal;
+        this.empty = empty;
+    }
 
     public Design getEnemy() {
         return enemy;

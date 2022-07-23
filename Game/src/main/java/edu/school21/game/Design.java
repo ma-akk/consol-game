@@ -6,6 +6,17 @@ public class Design {
     private Color color;
     private char symbol;
 
+    public Design() {
+    }
+
+    @Override
+    public String toString() {
+        return "Design{" +
+                "color=" + color +
+                ", symbol=" + symbol +
+                '}';
+    }
+
     public Design(Color color, char symbol) {
         this.color = color;
         this.symbol = symbol;

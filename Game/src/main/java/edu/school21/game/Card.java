@@ -1,6 +1,11 @@
 package edu.school21.game;
 
+import java.awt.*;
 import java.util.Random;
+
+import static com.diogonunes.jcolor.Ansi.colorize;
+import static com.diogonunes.jcolor.Attribute.BACK_COLOR;
+import static com.diogonunes.jcolor.Attribute.WHITE_BACK;
 
 public class Card {
     private static final double EMPTY_VS_ENEMIES = 0.8;
@@ -46,7 +51,7 @@ public class Card {
         this.enemiesCount = enemiesCount;
         this.wallsCount = wallsCount;
         this.designList = designList;
-        this.empty = new Design(designList.empty);
+        this.empty = new Design(designList.getEmpty());
         this.enemies = new Enemy[enemiesCount];
         this.walls = new Wall[wallsCount];
         this.symbolArray = new char[size + 2][size + 2];
@@ -56,11 +61,11 @@ public class Card {
 
     public void generateEmptyCard(){
         for (int i = 0; i < size + 2; i++) {
-            for (int j = 0; j < size + 2; j++){
-                if (i == 0 || j == 0 || i == size + 1 || j == size + 1){
-                    positionArray[i][j].setParams(i, j, designList.wall, Type.WALL);
+            for (int j = 0; j < size + 2; j++) {
+                if (i == 0 || j == 0 || i == size + 1 || j == size + 1) {
+                    positionArray[i][j] = new Position(i, j, designList.getWall(), Type.WALL);
                 } else {
-                    positionArray[i][j].setParams(i, j, designList.empty, Type.EMPTY);
+                    positionArray[i][j] = new Position(i, j, designList.getEmpty(), Type.EMPTY);
                 }
             }
         }
@@ -72,6 +77,18 @@ public class Card {
         Random rand = new Random(System.currentTimeMillis());
         // Walls
 
+    }
+
+    public void positionToCharArray(){
+        for (int i = 0; i < size + 2; i++) {
+            for (int j = 0; j < size + 2; j++){
+                Color color = positionArray[i][j].getColor();
+                System.out.print(colorize(String.valueOf(positionArray[i][j].getSymbol()), WHITE_BACK(),
+                        BACK_COLOR(color.getRed(), color.getGreen(),
+                                color.getBlue())));
+            }
+            System.out.println();
+        }
     }
 
     public DesignList getDesignList() {
