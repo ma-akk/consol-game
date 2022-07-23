@@ -6,20 +6,23 @@ public class Position {
 
     private int x;
     private int y;
-    private Color color;
-    private char design;
+    private Design design;
 
-    public Position(int x, int y, Color color, char design) {
+    public Position(int x, int y, Design design) {
         this.x = x;
         this.y = y;
-        this.color = color;
         this.design = design;
+    }
+
+    public Position(int x, int y, Color color, char c) {
+        this.x = x;
+        this.y = y;
+        this.design = new Design(color, c);
     }
 
     public Position(Position other) {
         this.x = other.x;
         this.y = other.y;
-        this.color = new Color(other.color.getRGB());
         this.design = other.design;
     }
 
@@ -35,10 +38,18 @@ public class Position {
     }
 
     public Color getColor() {
-        return color;
+        return design.getColor();
     }
 
-    public char getDesign() {
+    public char getSymbol() {
+        return design.getSymbol();
+    }
+
+    public void setSymbol(char c){
+        this.design.setSymbol(c);
+    }
+
+    public Design getDesign() {
         return design;
     }
 
@@ -51,10 +62,10 @@ public class Position {
     }
 
     public void setColor(Color color) {
-        this.color = color;
+        this.design.setColor(color);
     }
 
-    public void setDesign(char design) {
+    public void setDesign(Design design) {
         this.design = design;
     }
 

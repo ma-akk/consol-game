@@ -51,6 +51,6 @@ public abstract class Character {
     // true - если ожидаемая позиция цель или пустое место
     public boolean isAbleMakeMove(Position position) {
         return position.equals(characterGoal) ||
-                position.getDesign() == ' ';
+                position.getSymbol() == ' ';
     }
 }
