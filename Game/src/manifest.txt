@@ -1,0 +1,2 @@
+Main-Class: edu/school21/game/app/Game
+
