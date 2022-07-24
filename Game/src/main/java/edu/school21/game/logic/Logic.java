@@ -11,10 +11,12 @@ import edu.school21.game.objects.enums.Type;
 import edu.school21.game.parsing.JParserCmd;
 
 import java.io.IOException;
+import java.util.Scanner;
 
 public class Logic {
 
     private JParserCmd parser = new JParserCmd();
+    Scanner scan = new Scanner(System.in);
     private DesignList designList;
     private Card cardGame;
     private Player player;
@@ -27,9 +29,13 @@ public class Logic {
         while (true) {
             cardGame.printCard();
             cardGame.changePosition(Type.PLAYER, cardGame.getPlayerPosition(),
-                    player.doStep(player.getStepSignal()));
+                    player.doStep(player.getStepSignal(parser.getProfile())));
             cardGame.positionCardBySymbolArray();
             for (int i = 0; i < enemies.length; i++) {
+                if (parser.getProfile().equals("dev")) {
+                    int flag = scan.nextInt();
+                    cardGame.printCard();
+                }
                 enemies[i].setCharacterGoal(player.getCharacterPos());
                 cardGame.changePosition(Type.ENEMY, cardGame.getEnemiesPosition()[i],
                         enemies[i].doStep(enemies[i].getStepDirection(
@@ -44,10 +50,12 @@ public class Logic {
                 cardGame.printCard();
                 player.getMessageFinish("YOU WIN! CONGRATULATION!");
             }
-            try {
-                Runtime.getRuntime().exec("clear");
-            } catch (IOException e) {
-                throw new RuntimeException(e);
+            if (parser.getProfile().equals("production")) {
+                try {
+                    Runtime.getRuntime().exec("clear");
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
             }
         }
     }
@@ -73,6 +81,10 @@ public class Logic {
         JCommander.newBuilder().addObject(parser)
                 .build()
                 .parse(args);
-        parser.parseProps();
+        if (parser.getProfile().equals("dev")) {
+            parser.parseDevProps();
+        } else if (parser.getProfile().equals("production")) {
+            parser.parseProductionProps();
+        }
     }
 }

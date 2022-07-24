@@ -35,10 +35,13 @@ public class Player extends Character {
         if (signalInput.toLowerCase().charAt(0) == '9') {
             result = Signal.GIVEUP;
         }
+        if (signalInput.toLowerCase().charAt(0) == '8') {
+            result = Signal.CONFIRM;
+        }
         scanner.nextLine();
         return result;
     }
-    public Signal getStepSignal() {
+    public Signal getStepSignal(String profile) {
 
         Signal valueSignal = getValueSignal();
 
@@ -55,8 +58,10 @@ public class Player extends Character {
         }
 //        if (valueSignal == Signal.CONFIRM &&
 //                profile.equals("dev")) {
-//            method confirmStepEnemy();
+//            isConfirmStepEnemy = true;
 //        }
         return valueSignal;
     }
+
+
 }

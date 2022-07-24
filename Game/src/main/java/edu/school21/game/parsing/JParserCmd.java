@@ -35,11 +35,10 @@ public class JParserCmd {
 
     @Parameter(
             names = "--profile",
-            description = "profile game"
-//            required = true
+            description = "profile game",
+            required = true
     )
     private String profile;
-
     private String enemyChar;
     private String playerChar;
     private String wallChar;
@@ -109,15 +108,14 @@ public class JParserCmd {
         return chooseColor(emptyColor);
     }
 
-    public void parseProps() {
-
+    public void parseProps(String filename) {
         FileInputStream fileInput;
 
         Properties property = new Properties();
 
         try {
-            //JParserCmd.class.getResource("/resources/application.properties")
-            fileInput = new FileInputStream("src/main/resources/application.properties");
+            //JParserCmd.class.getResource("/resources/application-production.properties")
+            fileInput = new FileInputStream(filename);
             property.load(fileInput);
             enemyChar = property.getProperty("enemy.char");
             playerChar = property.getProperty("player.char");
@@ -132,6 +130,14 @@ public class JParserCmd {
         } catch (IOException e) {
             e.getStackTrace();
         }
+    }
+
+    public void parseProductionProps() {
+        parseProps("src/main/resources/application-production.properties");
+    }
+
+    public void parseDevProps() {
+        parseProps("src/main/resources/application-dev.properties");
     }
 
     private Color chooseColor(String colorName) {
