@@ -71,15 +71,103 @@ public class Card {
         }
     }
 
-    public void generateCard(){
-        generateEmptyCard();
-
-        Random rand = new Random(System.currentTimeMillis());
-        // Walls
-
+    public void clearCard(){
+        for (int i = 1; i < size + 1; i++) {
+            for (int j = 1; j < size + 1; j++) {
+                positionArray[i][j].setParams(i, j, designList.getEmpty(), Type.EMPTY);
+            }
+        }
     }
 
-    public void positionToCharArray(){
+    public void generateWallsAndEnemies(){
+        Random rand = new Random(System.currentTimeMillis());
+        int x;
+        int y;
+        int exitLoop = size * size * size;
+        int checkWalls = wallsCount;
+        int checkEnemies = enemiesCount;
+        while (checkWalls + checkEnemies > 0 && exitLoop-- > 0){
+            x = rand.nextInt(size) + 1;
+            y = rand.nextInt(size) + 1;
+            if (positionArray[x][y].getType() == Type.EMPTY) {
+                if (exitLoop % 2 == 0 && checkWalls > 0) {
+                    checkWalls--;
+                    positionArray[x][y].setParams(x, y, designList.getWall(), Type.WALL);
+                } else if (checkEnemies > 0){
+                    positionArray[x][y].setParams(x, y, designList.getEnemy(), Type.ENEMY);
+                    enemies[enemiesCount - checkEnemies--] = new Enemy(x, y, designList.getEnemy(), Type.ENEMY);
+                }
+            }
+        }
+        if (checkWalls > 0 || checkEnemies > 0)
+            throw new IllegalParametersException("Too many walls and enemies!");
+    }
+
+    public int generateGoalAndPlayer(int exitRecurse){
+        Random rand = new Random(System.currentTimeMillis());
+        int x;
+        int y;
+        int exitLoop = size * size * size;
+        boolean goalFlag = false;
+        boolean playerFlag = false;
+        while ((!goalFlag || !playerFlag) && exitLoop-- > 0){
+            x = rand.nextInt(size) + 1;
+            y = rand.nextInt(size) + 1;
+            if (positionArray[x][y].getType() == Type.EMPTY && !goalFlag && checkAroundPos(x, y)) {
+                goalFlag = true;
+                positionArray[x][y].setParams(x, y, designList.getGoal(), Type.GOAL);
+                gameGoal = new Position(x, y, designList.getGoal(), Type.GOAL);
+            }
+            if (positionArray[x][y].getType() == Type.EMPTY && goalFlag && checkWayToGoal(x, y)) {
+                playerFlag = true;
+                positionArray[x][y].setParams(x, y, designList.getPlayer(), Type.PLAYER);
+                player = new Player(positionArray[x][y], gameGoal);
+            }
+        }
+        if ((!goalFlag || !playerFlag) && exitRecurse > 0) {
+            clearCard();
+            generateWallsAndEnemies();
+            generateGoalAndPlayer(--exitRecurse);
+        }
+        return exitRecurse;
+    }
+
+    public void positionCardBySymbolArray(){
+        for (int i = 0; i < size + 2; i++) {
+            for (int j = 0; j < size + 2; j++){
+                symbolArray[i][j] = positionArray[i][j].getSymbol();
+            }
+        }
+    }
+
+    private void searchWay(int x, int y){
+        if (x > 0 && y > 0 && x < size && y < size){
+            searchWay(x, y +1);
+        }
+    }
+
+    private boolean checkWayToGoal(int x, int y) {
+
+        return true;
+    }
+
+    private boolean checkAroundPos(int x, int y) {
+        if (positionArray[x + 1][y].getType() == Type.EMPTY ||
+                positionArray[x - 1][y].getType() == Type.EMPTY ||
+                positionArray[x][y + 1].getType() == Type.EMPTY ||
+                positionArray[x][y - 1].getType() == Type.EMPTY)
+            return true;
+        else return false;
+    }
+
+    public void generateCard(){
+        generateEmptyCard();
+        generateWallsAndEnemies();
+        if (generateGoalAndPlayer(size) == 0)
+            throw new IllegalParametersException("Can't make good card. :(\nPlease, change params and try one more time!");
+    }
+
+    public void printCard(){
         for (int i = 0; i < size + 2; i++) {
             for (int j = 0; j < size + 2; j++){
                 Color color = positionArray[i][j].getColor();

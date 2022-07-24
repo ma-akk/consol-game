@@ -12,6 +12,14 @@ public class DesignList {
     public DesignList() {
 
     }
+    public DesignList(DesignList other) {
+        this.enemy = other.enemy;
+        this.player = other.player;
+        this.wall = other.wall;
+        this.goal = other.goal;
+        this.empty = other.empty;
+
+    }
 
     public DesignList(Design enemy, Design player, Design wall, Design goal, Design empty) {
         this.enemy = enemy;
@@ -19,6 +27,25 @@ public class DesignList {
         this.wall = wall;
         this.goal = goal;
         this.empty = empty;
+    }
+
+    public void setParams(Design enemy, Design player, Design wall, Design goal, Design empty){
+        this.enemy = enemy;
+        this.player = player;
+        this.wall = wall;
+        this.goal = goal;
+        this.empty = empty;
+    }
+
+    @Override
+    public String toString() {
+        return "DesignList{" +
+                "\nenemy=" + enemy +
+                ", \nplayer=" + player +
+                ", \nwall=" + wall +
+                ", \ngoal=" + goal +
+                ", \nempty=" + empty +
+                '}';
     }
 
     public Design getEnemy() {
