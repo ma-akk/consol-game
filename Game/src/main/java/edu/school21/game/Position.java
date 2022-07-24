@@ -16,12 +16,6 @@ public class Position {
         this.type = type;
     }
 
-    public Position(int x, int y, Design design) {
-        this.x = x;
-        this.y = y;
-        this.design = design;
-    }
-
     public Position(int x, int y, Color color, char c, Type type) {
         this.x = x;
         this.y = y;

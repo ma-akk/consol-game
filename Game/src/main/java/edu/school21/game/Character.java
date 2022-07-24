@@ -22,15 +22,16 @@ public abstract class Character {
         this.characterGoal = characterGoal;
     }
 
-    //одинаковый и у игрока, и у врага, по-разному получаем сигнал
-    //если вернули 0 - шаг не сделан, ждем следующего сигнала
     public Position doStep(Signal direction) {
         characterPos = getPotentialPos(direction);
         return characterPos;
     }
 
-    //здесь ' ' - это пустое место (будет заменено)
-    // true - если ожидаемая позиция цель или пустое место
+    public Position doStep(Position position) {
+        characterPos = position;
+        return characterPos;
+    }
+
     public boolean isAbleMakeMove(Position position) {
         return position.equals(characterGoal) ||
                 position.getType() == Type.EMPTY;

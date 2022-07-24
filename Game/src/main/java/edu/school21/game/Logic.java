@@ -9,6 +9,7 @@ public class Logic {
     private Card cardGame;
     private Player player;
     private Enemy[] enemies;
+    private Position[] enemiesPos;
 
     public void start(String[] args) {
         parseParamsGame(args);
@@ -17,13 +18,15 @@ public class Logic {
             cardGame.printCard();
             cardGame.changePosition(Type.PLAYER, cardGame.getPlayerPosition(),
                     player.doStep(player.getStepSignal()));
-//            for (int i = 0; i < enemies.length; i++) {
-//                cardGame.changePosition(Type.ENEMY, cardGame.getEnemies()[i],
-//                        enemies[i].doStep(enemies[i].getStepDirection())); //some method to get direction
-//                if (enemies[i].getCharacterGoal() == enemies[i].getCharacterPos()) {
-//                    enemies[i].getMessageFinish("YOU LOSE! FAIL!");
-//                }
-//            }
+            for (int i = 0; i < enemies.length; i++) {
+                cardGame.changePosition(Type.ENEMY, cardGame.getEnemiesPosition()[i],
+                        enemies[i].doStep(enemies[i].getStepDirection(
+                                cardGame.getSymbolArray(), parser.getEmptyChar())));
+                cardGame.positionCardBySymbolArray();
+                if (enemies[i].getCharacterGoal() == enemies[i].getCharacterPos()) {
+                    enemies[i].getMessageFinish("YOU LOSE! FAIL!");
+                }
+            }
             if (player.getCharacterGoal() == player.getCharacterPos()) {
                 player.getMessageFinish("YOU WIN! CONGRATULATION!");
             }
@@ -39,6 +42,12 @@ public class Logic {
         cardGame = new Card(designList, parser.getFieldSize(),
                 parser.getEnemiesCount(), parser.getWallsCount());
         player = new Player(cardGame.getPlayerPosition(), cardGame.getGameGoal());
+        enemies = new Enemy[parser.getEnemiesCount()];
+        enemiesPos = cardGame.getEnemiesPosition();
+        for (int i = 0; i < parser.getEnemiesCount(); i++) {
+            enemies[i].setCharacterPos(enemiesPos[i]);
+            enemies[i].setCharacterGoal(player.getCharacterGoal());
+        }
     }
 
     public void parseParamsGame(String[] args) {

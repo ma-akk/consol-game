@@ -14,7 +14,7 @@ public class Card {
     private int enemiesCount;
     private int wallsCount;
     private DesignList designList;
-    private Position[] enemies;
+    private Position[] enemiesPosition;
     private Position playerPosition;
     private Position[] walls;
     private Position gameGoal;
@@ -27,7 +27,7 @@ public class Card {
         this.enemiesCount = other.enemiesCount;
         this.wallsCount = other.wallsCount;
         this.designList = other.designList;
-        this.enemies = other.enemies;
+        this.enemiesPosition = other.enemiesPosition;
         this.playerPosition = other.playerPosition;
         this.walls = other.walls;
         this.gameGoal = other.gameGoal;
@@ -52,7 +52,7 @@ public class Card {
         this.wallsCount = wallsCount;
         this.designList = designList;
         this.empty = new Design(designList.getEmpty());
-        this.enemies = new Position[enemiesCount];
+        this.enemiesPosition = new Position[enemiesCount];
         this.walls = new Position[wallsCount];
         this.symbolArray = new char[size + 2][size + 2];
         this.positionArray = new Position[size + 2][size + 2];
@@ -95,7 +95,7 @@ public class Card {
                     positionArray[x][y].setParams(x, y, designList.getWall(), Type.WALL);
                 } else if (checkEnemies > 0){
                     positionArray[x][y].setParams(x, y, designList.getEnemy(), Type.ENEMY);
-                    enemies[enemiesCount - checkEnemies--] = new Position(x, y, designList.getEnemy(), Type.ENEMY);
+                    enemiesPosition[enemiesCount - checkEnemies--] = new Position(x, y, designList.getEnemy(), Type.ENEMY);
                 }
             }
         }
@@ -145,7 +145,7 @@ public class Card {
                 x--;
             }
         }
-        return new Position(x, y, designList.getPlayer() );
+        return new Position(x, y, designList.getPlayer(), Type.PLAYER);
     }
 
     private boolean checkWayToGoal(int x, int y) {
@@ -183,7 +183,7 @@ public class Card {
     public int searchEnemy(Position pos){
         int count = 0;
         while (count < enemiesCount){
-            if (enemies[count].getX() == pos.getX() && enemies[count].getY() == pos.getY())
+            if (enemiesPosition[count].getX() == pos.getX() && enemiesPosition[count].getY() == pos.getY())
                 return count;
             count++;
         }
@@ -194,7 +194,7 @@ public class Card {
         if (type == Type.ENEMY){
             int i = searchEnemy(prev);
             if (i > -1) {
-                enemies[i] = cur;
+                enemiesPosition[i] = cur;
                 positionArray[prev.getX()][prev.getY()].setDesign(designList.getEmpty());
                 positionArray[cur.getX()][cur.getY()].setDesign(designList.getEnemy());
             }
@@ -298,12 +298,12 @@ public class Card {
         this.size = size;
     }
 
-    public Position[] getEnemies() {
-        return enemies;
+    public Position[] getEnemiesPosition() {
+        return enemiesPosition;
     }
 
-    public void setEnemies(Position[] enemies) {
-        this.enemies = enemies;
+    public void setEnemiesPosition(Position[] enemiesPosition) {
+        this.enemiesPosition = enemiesPosition;
     }
 
     public Position getPlayerPosition() {
