@@ -44,10 +44,10 @@ public class Logic {
         player = new Player(cardGame.getPlayerPosition(), cardGame.getGameGoal());
         enemies = new Enemy[parser.getEnemiesCount()];
         enemiesPos = cardGame.getEnemiesPosition();
-//        for (int i = 0; i < parser.getEnemiesCount(); i++) {
-//            enemies[i].setCharacterPos(enemiesPos[i]);
-//            enemies[i].setCharacterGoal(player.getCharacterGoal());
-//        }
+        for (int i = 0; i < parser.getEnemiesCount(); i++) {
+            enemies[i] = new Enemy(enemiesPos[i]);
+            enemies[i].setCharacterGoal(player.getCharacterGoal());
+        }
     }
 
     public void parseParamsGame(String[] args) {
