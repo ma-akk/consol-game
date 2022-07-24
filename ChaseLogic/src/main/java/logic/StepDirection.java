@@ -59,7 +59,6 @@ public class StepDirection {
     }
 
     public void getStepDirection(int x, int y, char[][] card, char enemy, char player, char empty){
-        Random random = new Random(System.currentTimeMillis());
         if (card[x][y] != enemy || x < 1 || y < 1 || x > card.length - 2 || y > card.length - 2 || enemy == player ||
         player == empty || enemy == empty)
         {
@@ -78,22 +77,59 @@ public class StepDirection {
             this.y = y;
             return;
         }
-        if (x == playXY.getX() && y > playXY.getY() && (card[x][y - 1] == empty || card[x][y - 1] == player)){
-            y--;
-        } else if (x == playXY.getX() && y < playXY.getY() && (card[x][y + 1] == empty || card[x][y + 1] == player)){
-            y++;
-        } else if (y == playXY.getY() && x < playXY.getX() && (card[x + 1][y] == empty || card[x + 1][y] == player)){
-            x++;
-        } else if (y == playXY.getY() && x > playXY.getX() && (card[x - 1][y] == empty || card[x - 1][y] == player)){
-            x--;
-        } else if (x >= playXY.getX() && (card[x - 1][y] == empty || card[x - 1][y] == player) ){
-            x--;
-        } else if (x <= playXY.getX() && (card[x + 1][y] == empty || card[x + 1][y] == player)){
-            x++;
-        } else if (y >= playXY.getY() && (card[x][y - 1] == empty || card[x][y - 1] == player)){
-            y--;
-        } else if (y <= playXY.getY() && (card[x][y + 1] == empty || card[x][y + 1] == player)){
-            y++;
+        Random rand = new Random(System.currentTimeMillis());
+        if (rand.nextInt() % 2 == 0) {
+            if (x == playXY.getX() && y > playXY.getY() && (card[x][y - 1] == empty || card[x][y - 1] == player)) {
+                y--;
+            } else if (x == playXY.getX() && y < playXY.getY() && (card[x][y + 1] == empty || card[x][y + 1] == player)) {
+                y++;
+            } else if (y == playXY.getY() && x < playXY.getX() && (card[x + 1][y] == empty || card[x + 1][y] == player)) {
+                x++;
+            } else if (y == playXY.getY() && x > playXY.getX() && (card[x - 1][y] == empty || card[x - 1][y] == player)) {
+                x--;
+            } else if (x >= playXY.getX() && (card[x - 1][y] == empty || card[x - 1][y] == player)) {
+                x--;
+            } else if (x <= playXY.getX() && (card[x + 1][y] == empty || card[x + 1][y] == player)) {
+                x++;
+            } else if (y >= playXY.getY() && (card[x][y - 1] == empty || card[x][y - 1] == player)) {
+                y--;
+            } else if (y <= playXY.getY() && (card[x][y + 1] == empty || card[x][y + 1] == player)) {
+                y++;
+            } else if (card[x][y + 1] == empty || card[x][y + 1] == player) {
+                y++;
+            } else if (card[x][y - 1] == empty || card[x][y - 1] == player) {
+                y--;
+            } else if (card[x + 1][y] == empty || card[x + 1][y] == player) {
+                x++;
+            } else if (card[x - 1][y] == empty || card[x - 1][y] == player) {
+                x--;
+            }
+        } else {
+            if (y == playXY.getY() && x < playXY.getX() && (card[x + 1][y] == empty || card[x + 1][y] == player)) {
+                x++;
+            } else if (y == playXY.getY() && x > playXY.getX() && (card[x - 1][y] == empty || card[x - 1][y] == player)) {
+                x--;
+            } else if (x == playXY.getX() && y > playXY.getY() && (card[x][y - 1] == empty || card[x][y - 1] == player)) {
+                y--;
+            } else if (x == playXY.getX() && y < playXY.getY() && (card[x][y + 1] == empty || card[x][y + 1] == player)) {
+                y++;
+            } else if (y >= playXY.getY() && (card[x][y - 1] == empty || card[x][y - 1] == player)) {
+                y--;
+            } else if (y <= playXY.getY() && (card[x][y + 1] == empty || card[x][y + 1] == player)) {
+                y++;
+            } else if (x >= playXY.getX() && (card[x - 1][y] == empty || card[x - 1][y] == player)) {
+                x--;
+            } else if (x <= playXY.getX() && (card[x + 1][y] == empty || card[x + 1][y] == player)) {
+                x++;
+            } else if (card[x + 1][y] == empty || card[x + 1][y] == player) {
+                x++;
+            } else if (card[x - 1][y] == empty || card[x - 1][y] == player) {
+                x--;
+            } else if (card[x][y + 1] == empty || card[x][y + 1] == player) {
+                y++;
+            } else if (card[x][y - 1] == empty || card[x][y - 1] == player) {
+                y--;
+            }
         }
         this.x = x;
         this.y = y;
