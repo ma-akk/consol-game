@@ -89,22 +89,48 @@ public class Position {
     }
 
     public int[] getCoordinates() {
-        return new int[]{x, y};
+        return new int[]{y, x};
     }
 
     public void incX() {
-        this.x++;
+        this.y--;
     }
 
     public void decX() {
-        this.x--;
-    }
-
-    public void incY() {
         this.y++;
     }
 
+    public void incY() {
+        this.x++;
+    }
+
     public void decY() {
-        this.y--;
+        this.x--;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+
+        Position other = (Position) obj;
+
+        if (obj == this) {
+            return true;
+        }
+        if (obj == null || obj.getClass() != this.getClass()) {
+            return false;
+        }
+        return this.x == other.x && this.y == other.y;
+    }
+
+    @Override
+    public int hashCode() {
+
+        final int prime = 31;
+
+        int result = 1;
+
+        result = prime * result + x;
+        result = prime * result + y;
+        return result;
     }
 }

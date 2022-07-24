@@ -23,11 +23,11 @@ public class Logic {
                         enemies[i].doStep(enemies[i].getStepDirection(
                                 cardGame.getSymbolArray(), parser.getEmptyChar())));
                 cardGame.positionCardBySymbolArray();
-                if (enemies[i].getCharacterGoal() == enemies[i].getCharacterPos()) {
+                if (enemies[i].getCharacterGoal().equals(enemies[i].getCharacterPos())) {
                     enemies[i].getMessageFinish("YOU LOSE! FAIL!");
                 }
             }
-            if (player.getCharacterGoal() == player.getCharacterPos()) {
+            if (player.getCharacterGoal().equals(player.getCharacterPos())) {
                 player.getMessageFinish("YOU WIN! CONGRATULATION!");
             }
         }
@@ -44,10 +44,10 @@ public class Logic {
         player = new Player(cardGame.getPlayerPosition(), cardGame.getGameGoal());
         enemies = new Enemy[parser.getEnemiesCount()];
         enemiesPos = cardGame.getEnemiesPosition();
-        for (int i = 0; i < parser.getEnemiesCount(); i++) {
-            enemies[i].setCharacterPos(enemiesPos[i]);
-            enemies[i].setCharacterGoal(player.getCharacterGoal());
-        }
+//        for (int i = 0; i < parser.getEnemiesCount(); i++) {
+//            enemies[i].setCharacterPos(enemiesPos[i]);
+//            enemies[i].setCharacterGoal(player.getCharacterGoal());
+//        }
     }
 
     public void parseParamsGame(String[] args) {
