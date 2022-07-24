@@ -1,4 +1,10 @@
-package edu.school21.game;
+package edu.school21.game.objects.characters;
+
+import edu.school21.game.objects.card.Design;
+import edu.school21.game.objects.card.Position;
+import edu.school21.game.objects.enums.Signal;
+import edu.school21.game.objects.enums.Type;
+import logic.StepDirection;
 
 public class Enemy extends Character {
 

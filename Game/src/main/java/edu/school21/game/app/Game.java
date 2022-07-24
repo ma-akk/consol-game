@@ -1,10 +1,12 @@
-package edu.school21.game;
+package edu.school21.game.app;
+
+import edu.school21.game.logic.Logic;
 
 import java.io.IOException;
 
 public class Game {
 
-    public static void main(String[] args) throws InterruptedException, IOException {
+    public static void main(String[] args) {
 
         Logic logicGame = new Logic();
         logicGame.start(args);

@@ -1,4 +1,7 @@
-package edu.school21.game;
+package edu.school21.game.objects.card;
+
+import edu.school21.game.exceptions.IllegalParametersException;
+import edu.school21.game.objects.enums.Type;
 
 import java.awt.*;
 import java.util.Random;
@@ -194,9 +197,10 @@ public class Card {
         if (type == Type.ENEMY){
             int i = searchEnemy(prev);
             if (i > -1) {
-                enemiesPosition[i] = cur;
                 positionArray[prev.getX()][prev.getY()].setDesign(designList.getEmpty());
                 positionArray[cur.getX()][cur.getY()].setDesign(designList.getEnemy());
+                enemiesPosition[i].setParams(cur.getX(), cur.getY(), designList.getEnemy(),
+                        Type.ENEMY);
             }
         }
         if (type == Type.PLAYER){

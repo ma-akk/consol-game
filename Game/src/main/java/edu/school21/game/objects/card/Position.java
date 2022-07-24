@@ -1,4 +1,6 @@
-package edu.school21.game;
+package edu.school21.game.objects.card;
+
+import edu.school21.game.objects.enums.Type;
 
 import java.awt.*;
 

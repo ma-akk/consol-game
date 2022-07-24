@@ -1,4 +1,4 @@
-package edu.school21.game;
+package edu.school21.game.parsing;
 
 import com.beust.jcommander.Parameter;
 

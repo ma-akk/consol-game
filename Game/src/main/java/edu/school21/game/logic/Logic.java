@@ -1,6 +1,16 @@
-package edu.school21.game;
+package edu.school21.game.logic;
 
 import com.beust.jcommander.JCommander;
+import edu.school21.game.objects.card.Card;
+import edu.school21.game.objects.card.Design;
+import edu.school21.game.objects.card.DesignList;
+import edu.school21.game.objects.card.Position;
+import edu.school21.game.objects.characters.Enemy;
+import edu.school21.game.objects.characters.Player;
+import edu.school21.game.objects.enums.Type;
+import edu.school21.game.parsing.JParserCmd;
+
+import java.io.IOException;
 
 public class Logic {
 
@@ -18,17 +28,26 @@ public class Logic {
             cardGame.printCard();
             cardGame.changePosition(Type.PLAYER, cardGame.getPlayerPosition(),
                     player.doStep(player.getStepSignal()));
+            cardGame.positionCardBySymbolArray();
             for (int i = 0; i < enemies.length; i++) {
+                enemies[i].setCharacterGoal(player.getCharacterPos());
                 cardGame.changePosition(Type.ENEMY, cardGame.getEnemiesPosition()[i],
                         enemies[i].doStep(enemies[i].getStepDirection(
                                 cardGame.getSymbolArray(), parser.getEmptyChar())));
                 cardGame.positionCardBySymbolArray();
                 if (enemies[i].getCharacterGoal().equals(enemies[i].getCharacterPos())) {
+                    cardGame.printCard();
                     enemies[i].getMessageFinish("YOU LOSE! FAIL!");
                 }
             }
             if (player.getCharacterGoal().equals(player.getCharacterPos())) {
+                cardGame.printCard();
                 player.getMessageFinish("YOU WIN! CONGRATULATION!");
+            }
+            try {
+                Runtime.getRuntime().exec("clear");
+            } catch (IOException e) {
+                throw new RuntimeException(e);
             }
         }
     }
@@ -46,7 +65,7 @@ public class Logic {
         enemiesPos = cardGame.getEnemiesPosition();
         for (int i = 0; i < parser.getEnemiesCount(); i++) {
             enemies[i] = new Enemy(enemiesPos[i]);
-            enemies[i].setCharacterGoal(player.getCharacterGoal());
+            enemies[i].setCharacterGoal(player.getCharacterPos());
         }
     }
 

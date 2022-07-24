@@ -1,4 +1,7 @@
-package edu.school21.game;
+package edu.school21.game.objects.characters;
+
+import edu.school21.game.objects.card.Position;
+import edu.school21.game.objects.enums.Signal;
 
 import java.util.Scanner;
 
@@ -41,14 +44,14 @@ public class Player extends Character {
 
         Position potentialPos = this.getPotentialPos(valueSignal);
 
+        if (valueSignal == Signal.GIVEUP) {
+            scanner.close();
+            getMessageFinish("YOU GAVE UP! FAIL!");
+        }
         while (characterPos.equals(potentialPos) &&
                 !isAbleMakeMove(potentialPos)) {
             valueSignal = getValueSignal();
             potentialPos = this.getPotentialPos(valueSignal);
-        }
-        if (valueSignal == Signal.GIVEUP) {
-            scanner.close();
-            getMessageFinish("YOU GAVE UP! FAIL!");
         }
 //        if (valueSignal == Signal.CONFIRM &&
 //                profile.equals("dev")) {
