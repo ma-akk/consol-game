@@ -109,28 +109,50 @@ public class Card {
         int y;
         int exitLoop = size * size * size;
         boolean goalFlag = false;
-        boolean playerFlag = false;
-        while ((!goalFlag || !playerFlag) && exitLoop-- > 0){
+        while (!goalFlag  && exitLoop-- > 0){
             x = rand.nextInt(size) + 1;
             y = rand.nextInt(size) + 1;
-            if (positionArray[x][y].getType() == Type.EMPTY && !goalFlag && checkAroundPos(x, y)) {
+            if (positionArray[x][y].getType() == Type.EMPTY && checkAroundPos(x, y)) {
                 goalFlag = true;
                 positionArray[x][y].setParams(x, y, designList.getGoal(), Type.GOAL);
                 gameGoal = new Position(x, y, designList.getGoal(), Type.GOAL);
-            }
-            if (positionArray[x][y].getType() == Type.EMPTY && goalFlag && checkWayToGoal(x, y)) {
-                playerFlag = true;
-                positionArray[x][y].setParams(x, y, designList.getPlayer(), Type.PLAYER);
-                playerPosition = new Position(positionArray[x][y]);
+                playerPosition = new Position(generatePlayerPos(x, y));
+                positionArray[playerPosition.getX()][playerPosition.getY()].setParams(x, y, designList.getPlayer(), Type.PLAYER);
             }
         }
-        if ((!goalFlag || !playerFlag) && exitRecurse > 0) {
+        if (!goalFlag && exitRecurse > 0) {
             clearCard();
             generateWallsAndEnemies();
             generateGoalAndPlayer(--exitRecurse);
         }
         return exitRecurse;
     }
+
+    private Position generatePlayerPos(int x, int y) {
+        Random rand = new Random(System.currentTimeMillis());
+        int exitLoop = rand.nextInt(size * (rand.nextInt(size) + 1)) + 1;
+        while (checkAroundPos(x, y) && exitLoop-- > 0){
+            if (positionArray[x][y + 1].getType() == Type.EMPTY ) {
+                y++;
+            }
+            else if (positionArray[x][y - 1].getType() == Type.EMPTY ) {
+                y--;
+            }
+            else if (positionArray[x + 1][y].getType() == Type.EMPTY ) {
+                x++;
+            }
+            else if (positionArray[x - 1][y].getType() == Type.EMPTY ) {
+                x--;
+            }
+        }
+        return new Position(x, y, designList.getPlayer() );
+    }
+
+    private boolean checkWayToGoal(int x, int y) {
+        positionCardBySymbolArray();
+        return searchWay( x, y);
+    }
+
 
     public void positionCardBySymbolArray(){
         for (int i = 0; i < size + 2; i++) {
@@ -139,30 +161,81 @@ public class Card {
             }
         }
     }
-
-    private boolean searchWay(int x, int y){
-        if (x > 0 && y > 0 && x < size && y < size){
-            if (positionArray[x][y + 1].getType() == Type.GOAL ||
-                    positionArray[x][y - 1].getType() == Type.GOAL ||
-                    positionArray[x + 1][y].getType() == Type.GOAL ||
-                    positionArray[x + 1][y].getType() == Type.GOAL) {
-
-                return true;
+    public void printSymbolCard(){
+        for (int i = 0; i < size + 2; i++) {
+            for (int j = 0; j < size + 2; j++){
+                System.out.print(symbolArray[i][j]);
             }
-            if (positionArray[x][y + 1].getType() == Type.EMPTY) {
+            System.out.println();
+        }
+    }
 
-                searchWay(x, y + 1);
+    private boolean checkEmptySymbol(char empty){
+        for (int i = 0; i < size + 2; i++) {
+            for (int j = 0; j < size + 2; j++){
+                if (symbolArray[i][j] == empty)
+                    return true;
             }
-            searchWay(x, y - 1);
-            searchWay(x + 1, y);
-            searchWay(x - 1, y);
         }
         return false;
     }
 
-    private boolean checkWayToGoal(int x, int y) {
+    public int searchEnemy(Position pos){
+        int count = 0;
+        while (count < enemiesCount){
+            if (enemies[count].getX() == pos.getX() && enemies[count].getY() == pos.getY())
+                return count;
+            count++;
+        }
+        return -1;
+    }
 
-        return true;
+    public void changePosition(Type type, Position prev, Position cur){
+        if (type == Type.ENEMY){
+            int i = searchEnemy(prev);
+            if (i > -1) {
+                enemies[i] = cur;
+                positionArray[prev.getX()][prev.getY()].setDesign(designList.getEmpty());
+                positionArray[cur.getX()][cur.getY()].setDesign(designList.getEnemy());
+            }
+        }
+        if (type == Type.PLAYER){
+            positionArray[prev.getX()][prev.getY()].setDesign(designList.getEmpty());
+            positionArray[cur.getX()][cur.getY()].setDesign(designList.getPlayer());
+            playerPosition = cur;
+        }
+    }
+
+    private boolean searchWay(int x, int y){
+        char playerFlag = designList.getPlayer().getSymbol();
+        if (x > 0 && y > 0 && x < size && y < size){
+            if (positionArray[x][y + 1].getType() == Type.GOAL ||
+                    positionArray[x][y - 1].getType() == Type.GOAL ||
+                    positionArray[x + 1][y].getType() == Type.GOAL ||
+                    positionArray[x - 1][y].getType() == Type.GOAL) {
+                return true;
+            }
+            symbolArray[x][y] = playerFlag;
+            System.out.println(x + " " + y);
+            printSymbolCard();
+            if (positionArray[x][y + 1].getType() == Type.EMPTY &&
+                    symbolArray[x][y + 1] != playerFlag) {
+                searchWay(x, y + 1);
+            }
+            if (positionArray[x][y - 1].getType() == Type.EMPTY &&
+                    symbolArray[x][y - 1] != playerFlag) {
+                searchWay(x, y - 1);
+            }
+            if (positionArray[x + 1][y].getType() == Type.EMPTY &&
+                    symbolArray[x + 1][y] != playerFlag) {
+                searchWay(x + 1, y);
+            }
+            if (positionArray[x - 1][y].getType() == Type.EMPTY &&
+                    symbolArray[x - 1][y] != playerFlag) {
+                searchWay(x - 1, y);
+            }
+        }
+        return false;
     }
 
     private boolean checkAroundPos(int x, int y) {
