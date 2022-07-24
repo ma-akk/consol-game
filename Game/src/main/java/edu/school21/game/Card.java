@@ -14,9 +14,9 @@ public class Card {
     private int enemiesCount;
     private int wallsCount;
     private DesignList designList;
-    private Enemy[] enemies;
-    private Player player;
-    private Wall[] walls;
+    private Position[] enemies;
+    private Position playerPosition;
+    private Position[] walls;
     private Position gameGoal;
     private Design empty;
     private char[][] symbolArray;
@@ -28,7 +28,7 @@ public class Card {
         this.wallsCount = other.wallsCount;
         this.designList = other.designList;
         this.enemies = other.enemies;
-        this.player = other.player;
+        this.playerPosition = other.playerPosition;
         this.walls = other.walls;
         this.gameGoal = other.gameGoal;
         this.empty = other.empty;
@@ -36,12 +36,12 @@ public class Card {
         this.positionArray = other.positionArray;
     }
 
-    public Card(int size, int enemiesCount, int wallsCount, DesignList designList, Player player) {
+    public Card(int size, int enemiesCount, int wallsCount, DesignList designList, Position player) {
         this.size = size;
         this.enemiesCount = enemiesCount;
         this.wallsCount = wallsCount;
         this.designList = designList;
-        this.player = player;
+        this.playerPosition = player;
     }
 
     public Card(DesignList designList, int size, int enemiesCount, int wallsCount) {
@@ -52,8 +52,8 @@ public class Card {
         this.wallsCount = wallsCount;
         this.designList = designList;
         this.empty = new Design(designList.getEmpty());
-        this.enemies = new Enemy[enemiesCount];
-        this.walls = new Wall[wallsCount];
+        this.enemies = new Position[enemiesCount];
+        this.walls = new Position[wallsCount];
         this.symbolArray = new char[size + 2][size + 2];
         this.positionArray = new Position[size + 2][size + 2];
         generateCard();
@@ -95,7 +95,7 @@ public class Card {
                     positionArray[x][y].setParams(x, y, designList.getWall(), Type.WALL);
                 } else if (checkEnemies > 0){
                     positionArray[x][y].setParams(x, y, designList.getEnemy(), Type.ENEMY);
-                    enemies[enemiesCount - checkEnemies--] = new Enemy(x, y, designList.getEnemy(), Type.ENEMY);
+                    enemies[enemiesCount - checkEnemies--] = new Position(x, y, designList.getEnemy(), Type.ENEMY);
                 }
             }
         }
@@ -121,7 +121,7 @@ public class Card {
             if (positionArray[x][y].getType() == Type.EMPTY && goalFlag && checkWayToGoal(x, y)) {
                 playerFlag = true;
                 positionArray[x][y].setParams(x, y, designList.getPlayer(), Type.PLAYER);
-                player = new Player(positionArray[x][y], gameGoal);
+                playerPosition = new Position(positionArray[x][y]);
             }
         }
         if ((!goalFlag || !playerFlag) && exitRecurse > 0) {
@@ -140,10 +140,24 @@ public class Card {
         }
     }
 
-    private void searchWay(int x, int y){
+    private boolean searchWay(int x, int y){
         if (x > 0 && y > 0 && x < size && y < size){
-            searchWay(x, y +1);
+            if (positionArray[x][y + 1].getType() == Type.GOAL ||
+                    positionArray[x][y - 1].getType() == Type.GOAL ||
+                    positionArray[x + 1][y].getType() == Type.GOAL ||
+                    positionArray[x + 1][y].getType() == Type.GOAL) {
+
+                return true;
+            }
+            if (positionArray[x][y + 1].getType() == Type.EMPTY) {
+
+                searchWay(x, y + 1);
+            }
+            searchWay(x, y - 1);
+            searchWay(x + 1, y);
+            searchWay(x - 1, y);
         }
+        return false;
     }
 
     private boolean checkWayToGoal(int x, int y) {
@@ -211,27 +225,27 @@ public class Card {
         this.size = size;
     }
 
-    public Enemy[] getEnemies() {
+    public Position[] getEnemies() {
         return enemies;
     }
 
-    public void setEnemies(Enemy[] enemies) {
+    public void setEnemies(Position[] enemies) {
         this.enemies = enemies;
     }
 
-    public Player getPlayer() {
-        return player;
+    public Position getPlayerPosition() {
+        return playerPosition;
     }
 
-    public void setPlayer(Player player) {
-        this.player = player;
+    public void setPlayerPosition(Position playerPosition) {
+        this.playerPosition = playerPosition;
     }
 
-    public Wall[] getWalls() {
+    public Position[] getWalls() {
         return walls;
     }
 
-    public void setWalls(Wall[] walls) {
+    public void setWalls(Position[] walls) {
         this.walls = walls;
     }
 
