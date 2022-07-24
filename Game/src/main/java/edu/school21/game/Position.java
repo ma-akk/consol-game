@@ -22,16 +22,18 @@ public class Position {
         this.design = design;
     }
 
-    public Position(int x, int y, Color color, char c) {
+    public Position(int x, int y, Color color, char c, Type type) {
         this.x = x;
         this.y = y;
         this.design = new Design(color, c);
+        this.type = type;
     }
 
     public Position(Position other) {
         this.x = other.x;
         this.y = other.y;
         this.design = other.design;
+        this.type = other.type;
     }
 
     public Position() {

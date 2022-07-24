@@ -11,4 +11,12 @@ public class Enemy extends Character {
 
     public Enemy() {
     }
+
+//    getter for char[][]
+//    getStepDirection(int x, int y, char[][] card, char enemy, char player, char empty)
+//        StepDirection.getX and getY
+//            changePosition();
+//    positionCardBySymbolArray()
+
+
 }

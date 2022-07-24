@@ -1,6 +1,50 @@
 package edu.school21.game;
 
-public abstract class Logic {
+import com.beust.jcommander.JCommander;
 
-    // 9 - game over
+public class Logic {
+
+    private JParserCmd parser = new JParserCmd();
+    private DesignList designList;
+    private Card cardGame;
+    private Player player;
+    private Enemy[] enemies;
+
+    public void start(String[] args) {
+        parseParamsGame(args);
+        initParamsGame();
+        while (true) {
+            cardGame.printCard();
+            cardGame.changePosition(Type.PLAYER, cardGame.getPlayerPosition(),
+                    player.doStep(player.getStepSignal()));
+//            for (int i = 0; i < enemies.length; i++) {
+//                cardGame.changePosition(Type.ENEMY, cardGame.getEnemies()[i],
+//                        enemies[i].doStep(enemies[i].getStepDirection())); //some method to get direction
+//                if (enemies[i].getCharacterGoal() == enemies[i].getCharacterPos()) {
+//                    enemies[i].getMessageFinish("YOU LOSE! FAIL!");
+//                }
+//            }
+            if (player.getCharacterGoal() == player.getCharacterPos()) {
+                player.getMessageFinish("YOU WIN! CONGRATULATION!");
+            }
+        }
+    }
+
+    public void initParamsGame() {
+        designList = new DesignList(new Design(parser.getEnemyColor(), parser.getEnemyChar()),
+                new Design(parser.getPlayerColor(), parser.getPlayerChar()),
+                new Design(parser.getWallColor(), parser.getWallChar()),
+                new Design(parser.getGoalColor(), parser.getGoalChar()),
+                new Design(parser.getEmptyColor(), parser.getEmptyChar()));
+        cardGame = new Card(designList, parser.getFieldSize(),
+                parser.getEnemiesCount(), parser.getWallsCount());
+        player = new Player(cardGame.getPlayerPosition(), cardGame.getGameGoal());
+    }
+
+    public void parseParamsGame(String[] args) {
+        JCommander.newBuilder().addObject(parser)
+                .build()
+                .parse(args);
+        parser.parseProps();
+    }
 }

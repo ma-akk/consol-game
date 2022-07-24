@@ -1,14 +1,10 @@
 package edu.school21.game;
 
 import com.beust.jcommander.Parameter;
-import com.beust.jcommander.Parameters;
-import com.diogonunes.jcdp.color.api.Ansi;
-import jdk.nashorn.internal.runtime.OptimisticReturnFilters;
 
 import java.awt.*;
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.Properties;
 
 import static java.awt.Color.*;
@@ -39,8 +35,8 @@ public class JParserCmd {
 
     @Parameter(
             names = "--profile",
-            description = "profile game",
-            required = true
+            description = "profile game"
+//            required = true
     )
     private String profile;
 

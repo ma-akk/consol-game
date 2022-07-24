@@ -24,6 +24,20 @@
             <artifactId>JColor</artifactId>
             <version>5.2.0</version>
         </dependency>
+        <!-- https://mvnrepository.com/artifact/com.github.wolf480pl/jline-log4j2-appender -->
+        <dependency>
+            <groupId>com.github.wolf480pl</groupId>
+            <artifactId>jline-log4j2-appender</artifactId>
+            <version>1.0.0</version>
+        </dependency>
+        <!-- подключить наш jar -->
+        <dependency>
+            <groupId>App</groupId>
+            <artifactId>hello</artifactId>
+            <version>1.0</version>
+            <scope>system</scope>
+            <systemPath>${env.HOME}/school21/picineJava/ChaseGame/target/hello.jar</systemPath>
+        </dependency>
     </dependencies>
 
     <properties>
