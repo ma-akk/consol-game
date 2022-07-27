@@ -1,6 +1,7 @@
 package edu.school21.game.parsing;
 
 import com.beust.jcommander.Parameter;
+import com.beust.jcommander.Parameters;
 
 import java.awt.*;
 import java.io.FileInputStream;
@@ -9,9 +10,9 @@ import java.util.Properties;
 
 import static java.awt.Color.*;
 
+@Parameters(separators = "=")
 public class JParserCmd {
 
-//    @Parameters(separators = "=")
     @Parameter(
             names = "--enemiesCount",
             description = "number of enemies",
@@ -114,7 +115,6 @@ public class JParserCmd {
         Properties property = new Properties();
 
         try {
-            //JParserCmd.class.getResource("/resources/application-production.properties")
             fileInput = new FileInputStream(filename);
             property.load(fileInput);
             enemyChar = property.getProperty("enemy.char");
@@ -132,12 +132,9 @@ public class JParserCmd {
         }
     }
 
-    public void parseProductionProps() {
-        parseProps("src/main/resources/application-production.properties");
-    }
-
-    public void parseDevProps() {
-        parseProps("src/main/resources/application-dev.properties");
+    public String generateFileNameProps() {
+        return "src/main/resources/application-" +
+                profile + ".properties";
     }
 
     private Color chooseColor(String colorName) {

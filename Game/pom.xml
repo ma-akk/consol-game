@@ -34,8 +34,6 @@
             <groupId>app</groupId>
             <artifactId>chaseLogic</artifactId>
             <version>1.0-SNAPSHOT</version>
-            <scope>system</scope>
-            <systemPath>${env.HOME}/.m2/repository/app/chaseLogic/1.0-SNAPSHOT/chaseLogic-1.0-SNAPSHOT.jar</systemPath>
         </dependency>
     </dependencies>
 
@@ -43,5 +41,47 @@
         <maven.compiler.source>8</maven.compiler.source>
         <maven.compiler.target>8</maven.compiler.target>
     </properties>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <version>2.4</version>
+                <configuration>
+                    <file>
+                        ${env.HOME}/.m2/repository/app/chaseLogic/1.0-SNAPSHOT/chaseLogic-1.0-SNAPSHOT.jar
+                    </file>
+                    <repositoryLayout>default</repositoryLayout>
+                    <groupId>app</groupId>
+                    <artifactId>chaseLogic</artifactId>
+                    <version>1.0-SNAPSHOT</version>
+                    <packaging>jar</packaging>
+                    <generatePom>true</generatePom>
+                    <archive>
+                        <manifest>
+                            <addClasspath>true</addClasspath>
+                            <classpathPrefix>dependency</classpathPrefix>
+                            <mainClass>edu.school21.game.app.Game</mainClass>
+                        </manifest>
+                    </archive>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-dependency-plugin</artifactId>
+                <version>2.10</version>
+                <executions>
+                    <execution>
+                        <id>copy-dependencies</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>copy-dependencies</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
 
 </project>

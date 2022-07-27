@@ -10,7 +10,6 @@ import edu.school21.game.objects.characters.Player;
 import edu.school21.game.objects.enums.Type;
 import edu.school21.game.parsing.JParserCmd;
 
-import java.io.IOException;
 import java.util.Scanner;
 
 public class Logic {
@@ -30,6 +29,10 @@ public class Logic {
             cardGame.printCard();
             cardGame.changePosition(Type.PLAYER, cardGame.getPlayerPosition(),
                     player.doStep(player.getStepSignal(parser.getProfile())));
+            if (player.getCharacterGoal().equals(player.getCharacterPos())) {
+                cardGame.printCard();
+                player.getMessageFinish("YOU WIN! CONGRATULATION!");
+            }
             cardGame.positionCardBySymbolArray();
             for (int i = 0; i < enemies.length; i++) {
                 if (parser.getProfile().equals("dev")) {
@@ -46,16 +49,8 @@ public class Logic {
                     enemies[i].getMessageFinish("YOU LOSE! FAIL!");
                 }
             }
-            if (player.getCharacterGoal().equals(player.getCharacterPos())) {
-                cardGame.printCard();
-                player.getMessageFinish("YOU WIN! CONGRATULATION!");
-            }
             if (parser.getProfile().equals("production")) {
-                try {
-                    Runtime.getRuntime().exec("clear");
-                } catch (IOException e) {
-                    throw new RuntimeException(e);
-                }
+                System.out.print("\033[H\033[J");
             }
         }
     }
@@ -81,10 +76,6 @@ public class Logic {
         JCommander.newBuilder().addObject(parser)
                 .build()
                 .parse(args);
-        if (parser.getProfile().equals("dev")) {
-            parser.parseDevProps();
-        } else if (parser.getProfile().equals("production")) {
-            parser.parseProductionProps();
-        }
+        parser.parseProps(parser.generateFileNameProps());
     }
 }
