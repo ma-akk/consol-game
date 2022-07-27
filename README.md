@@ -1,0 +1,2 @@
+# consol-game
+study project
