@@ -6,20 +6,20 @@
 Игра состоит из двух проектов - ChaseLogic реализует алгоритм движения врагов, Game - логику игры. \
 В игре есть два режима - dev и production. В зависимости от режима изменяется цветовая схема игры + в режиме dev можно отследить каждый ход врага и игрока. Есть возможность добавить пользовательский режим со своей цветовой схемой, для этого необходимо добавить в папку Game/src/main/resources файл application-<имя-режима>.properties
 Собрать проект ChaseLogic \
-cd ChaseLogic ; mvn install; cd .. \
+cd ChaseLogic ; mvn install; cd .. 
 
 Собрать проект Game \
-cd Game ; mvn install \
+cd Game ; mvn install 
 
 Запустить игру \
-java -jar Game-1.0-SNAPSHOT.jar --enemiesCount=10 --wallsCount=10 --size=20 --profile=production \
+java -jar Game-1.0-SNAPSHOT.jar --enemiesCount=10 --wallsCount=10 --size=20 --profile=production 
 
 --enemiesCount - количество врагов на карте \
---wallsCount - количество препятствий на карте \ 
+--wallsCount - количество препятствий на карте \
 --size - размер карты NxN \
---profile - режим игры \
+--profile - режим игры
 
 Управление: \
 WASD - шаг игрока \
 9 - give up (игрок может сдаться, игра завершается) \
-8 - (в режиме dev) подтверждение каждого сделанного хода \
+8 - (в режиме dev) подтверждение каждого сделанного хода
